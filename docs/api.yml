@@ -1,0 +1,213 @@
+openapi: "3.0.3"
+info:
+  title: WEB 100本ノック
+  version: "1.0"
+servers:
+  - url: http://localhost:8080/
+    description: "ローカル開発環境"
+paths:
+  /api/v1/streams:
+    post:
+      summary: YouTube配信情報の登録
+      tags:
+        - 配信情報
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - userId
+                - title
+                - description
+              properties:
+                userId:
+                  type: string
+                  description: ユーザーID
+                  example: "1"
+                title:
+                  type: string
+                  description: 配信タイトル
+                  example: "今日のライブ配信"
+                description:
+                  type: string
+                  description: 概要欄の内容
+                  example: "ゲーム実況をします"
+                  maxLength: 500
+      responses:
+        "201":
+          description: 作成成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stream"
+        "400":
+          description: バリデーションエラー
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        "500":
+          description: サーバー内部エラー
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerError"
+
+    get:
+      summary: YouTube配信情報の一覧取得
+      tags:
+        - 配信情報
+      responses:
+        "200":
+          description: 取得成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  streams:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/StreamSummary"
+        "500":
+          description: サーバー内部エラー
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerError"
+
+  /api/v1/streams/{streamId}:
+    get:
+      summary: YouTube配信情報の詳細取得
+      tags:
+        - 配信情報
+      parameters:
+        - name: streamId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: 配信ID
+      responses:
+        "200":
+          description: 取得成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stream"
+        "404":
+          description: 配信が見つかりません
+        "500":
+          description: サーバー内部エラー
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerError"
+
+    delete:
+      summary: YouTube配信情報の削除
+      tags:
+        - 配信情報
+      parameters:
+        - name: streamId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: 配信ID
+      responses:
+        "204":
+          description: 削除成功
+        "404":
+          description: 配信が見つかりません
+        "500":
+          description: サーバー内部エラー
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerError"
+
+components:
+  schemas:
+    Stream:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: ユーザーID
+          example: "1"
+        streamId:
+          type: string
+          description: 配信ID
+          example: "1"
+        title:
+          type: string
+          description: 配信タイトル
+          example: "今日のライブ配信"
+        description:
+          type: string
+          description: 配信の説明
+          example: "ゲーム実況をします"
+        createdAt:
+          type: string
+          format: date-time
+          description: 作成日時
+          example: "2025-12-08T10:00:00Z"
+    StreamSummary:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: ユーザーID
+          example: "1"
+        streamId:
+          type: string
+          description: 配信ID
+          example: "1"
+        title:
+          type: string
+          description: 配信タイトル
+          example: "今日のライブ配信"
+        createdAt:
+          type: string
+          format: date-time
+          description: 作成日時
+          example: "2025-12-08  T10:00:00Z"
+    ValidationError:
+      type: object
+      properties:
+        error:
+          type: string
+          description: エラーコード
+          example: "validation_error"
+        message:
+          type: string
+          description: エラーメッセージ
+          example: "入力内容に問題があります"
+        details:
+          type: array
+          description: フィールドごとのエラー詳細
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: エラーが発生したフィールド名
+                example: "title"
+              message:
+                type: string
+                description: エラーの詳細メッセージ
+                example: "タイトルは必須です"
+    ServerError:
+      type: object
+      properties:
+        error:
+          type: string
+          description: エラーコード
+          example: "internal_server_error"
+        message:
+          type: string
+          description: エラーメッセージ
+          example: "サーバー内部でエラーが発生しました"
