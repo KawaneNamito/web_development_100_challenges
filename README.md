@@ -53,3 +53,8 @@
 > 使っているうちに新しい要望とか出すかもしれないです！
 
 </details>
+
+## 設計ドキュメント
+
+- [API 仕様（OpenAPI Spec）](./docs/api.yml)
+- [テーブル設計](./docs/table.md)
