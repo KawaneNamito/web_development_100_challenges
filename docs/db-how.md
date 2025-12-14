@@ -2,7 +2,7 @@
 
 ## 概要
 
-Docker Composeを使用してPostgreSQLをローカルで起動し、Rustから接続する開発環境です。
+Docker Composeを使用してPostgreSQLをローカルで起動し、バックエンドから接続する開発環境です。
 
 ## 前提条件
 
@@ -16,7 +16,7 @@ Docker Composeを使用してPostgreSQLをローカルで起動し、Rustから�
 | `docker-compose.yml` | PostgreSQL 16 コンテナ定義 |
 | `.env` | 環境変数（ローカル用、gitignore対象） |
 | `.env.example` | 環境変数のテンプレート |
-| `init.sql` | DB初期化SQL |
+| `infra/database/migration` | DB初期化SQL |
 
 ## 環境変数
 
@@ -31,7 +31,7 @@ cp .env.example .env
 | `POSTGRES_USER` | devuser | DBユーザー名 |
 | `POSTGRES_PASSWORD` | devpassword | DBパスワード |
 | `POSTGRES_DB` | devdb | データベース名 |
-| `DATABASE_URL` | postgresql://devuser:devpassword@localhost:5432/devdb | Rust用接続文字列 |
+| `DATABASE_URL` | postgresql://devuser:devpassword@localhost:5432/devdb | 接続文字列 |
 
 ## 使い方
 
@@ -51,33 +51,6 @@ docker compose down
 
 # データも含めて完全削除
 docker compose down -v
-```
-
-## Rustからの接続
-
-```rust
-// 接続文字列
-let url = "postgresql://devuser:devpassword@localhost:5432/devdb";
-// または環境変数から
-let url = std::env::var("DATABASE_URL").unwrap();
-```
-
-### 推奨クレート
-
-`Cargo.toml` に追加：
-
-```toml
-[dependencies]
-# 同期版
-postgres = "0.19"
-
-# 非同期版
-tokio-postgres = "0.7"
-tokio = { version = "1", features = ["full"] }
-
-# ORM（どちらか選択）
-# diesel = { version = "2.1", features = ["postgres"] }
-# sqlx = { version = "0.8", features = ["runtime-tokio", "postgres"] }
 ```
 
 ## トラブルシューティング
