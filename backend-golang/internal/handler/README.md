@@ -1,0 +1,1 @@
+OpenAPIから生成されたServerInterfaceを実装するAPIハンドラー
