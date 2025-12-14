@@ -58,3 +58,12 @@
 
 - [API 仕様（OpenAPI Spec）](./docs/api.yml)
 - [テーブル設計](./docs/table.md)
+
+## 開発環境の起動
+
+```bash
+docker compose up -d                # PostgreSQL, Swagger UI 起動
+cd backend-golang && go run ./cmd/api  # API サーバー起動 (localhost:8080)
+```
+
+Swagger UI: http://localhost:8081
