@@ -1,4 +1,4 @@
 pub mod db;
 pub mod stream;
 
-pub use stream::{Stream, StreamRepository, StreamRepositoryImpl};
+pub use stream::{StreamRepository, StreamRepositoryImpl};

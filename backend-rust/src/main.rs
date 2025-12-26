@@ -1,5 +1,6 @@
 mod config;
 mod error;
+mod model;
 mod repository;
 
 use anyhow::Result;
