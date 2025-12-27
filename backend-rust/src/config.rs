@@ -28,3 +28,23 @@ impl Config {
         })
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_config_struct_creation() {
+        // 構造体の作成テスト
+        let config = Config {
+            database_url: "postgresql://test:test@localhost/test".to_string(),
+            port: 8080,
+        };
+
+        assert_eq!(config.port, 8080);
+        assert_eq!(config.database_url, "postgresql://test:test@localhost/test");
+    }
+
+    // 注: from_env()のテストは環境変数の競合があるため省略
+    // 実際の動作確認は統合テストまたは手動テストで実施
+}
