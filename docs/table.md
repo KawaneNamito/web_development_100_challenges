@@ -32,8 +32,11 @@ CREATE TABLE streams (
   FOREIGN KEY (user_id) REFERENCES users(user_id),
   title TEXT NOT NULL DEFAULT '',
   description TEXT NOT NULL DEFAULT '',
-  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+  category TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMPTZ
 );
+
 ```
 
 ## サンプルデータ
