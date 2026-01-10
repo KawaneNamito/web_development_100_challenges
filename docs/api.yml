@@ -1,7 +1,7 @@
 openapi: "3.0.3"
 info:
   title: WEB 100本ノック
-  version: "1.0"
+  version: "2.0.0"
 servers:
   - url: http://localhost:8080/
     description: "ローカル開発環境"
