@@ -35,6 +35,10 @@ paths:
                   description: 概要欄の内容
                   example: "ゲーム実況をします"
                   maxLength: 500
+                category:
+                  type: string
+                  description: 配信カテゴリ（任意）
+                  example: "ゲーム"
       responses:
         "201":
           description: 作成成功
@@ -59,6 +63,28 @@ paths:
       summary: YouTube配信情報の一覧取得
       tags:
         - 配信情報
+      parameters:
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+          description: カテゴリによる絞り込み（部分一致）
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+          description: 1回のリクエストで取得する件数
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+          description: 取得開始位置
       responses:
         "200":
           description: 取得成功
@@ -67,7 +93,19 @@ paths:
               schema:
                 type: object
                 properties:
-                  streams:
+                  total:
+                    type: integer
+                    description: 該当する全データ件数
+                    example: 100
+                  limit:
+                    type: integer
+                    description: リクエストされた取得件数
+                    example: 10
+                  offset:
+                    type: integer
+                    description: リクエストされた取得開始位置
+                    example: 0
+                  items:
                     type: array
                     items:
                       $ref: "#/components/schemas/StreamSummary"
@@ -107,7 +145,7 @@ paths:
                 $ref: "#/components/schemas/ServerError"
 
     delete:
-      summary: YouTube配信情報の削除
+      summary: YouTube配信情報の削除（論理削除）
       tags:
         - 配信情報
       parameters:
@@ -150,6 +188,10 @@ components:
           type: string
           description: 配信の説明
           example: "ゲーム実況をします"
+        category:
+          type: string
+          description: 配信カテゴリ
+          example: "ゲーム"
         createdAt:
           type: string
           format: date-time
@@ -170,6 +212,10 @@ components:
           type: string
           description: 配信タイトル
           example: "今日のライブ配信"
+        category:
+          type: string
+          description: 配信カテゴリ
+          example: "ゲーム"
         createdAt:
           type: string
           format: date-time

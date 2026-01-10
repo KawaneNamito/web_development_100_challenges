@@ -12,21 +12,21 @@
 
 ## 2. APIの仕様を変更する (`docs/api.yml`)
 
-- [ ] **配信登録 API (`POST /streams`)**
-    - [ ] リクエストボディに `category` (string) を追加
-- [ ] **配信一覧取得 API (`GET /streams`)**
-    - [ ] クエリパラメータの追加:
-        - [ ] `category`: カテゴリによる絞り込み
-        - [ ] `limit`: 1回のリクエストで取得する件数
-        - [ ] `offset`: 取得開始位置
-    - [ ] レスポンスボディの変更:
-        - [ ] ページネーション情報 (`limit`, `offset`, `total`) を追加
-        - [ ] `items` 配列の中に配信データを入れる構造に変更
-        - [ ] 各配信データに `category` を追加
-- [ ] **配信詳細取得 API (`GET /streams/{stream_id}`)**
-    - [ ] レスポンスボディに `category` を追加
-- [ ] **配信削除 API (`DELETE /streams/{stream_id}`)**
-    - [ ] 論理削除である旨を記載
+- [x] **配信登録 API (`POST /streams`)**
+    - [x] リクエストボディに `category` (string) を追加
+- [x] **配信一覧取得 API (`GET /streams`)**
+    - [x] クエリパラメータの追加:
+        - [x] `category`: カテゴリによる絞り込み
+        - [x] `limit`: 1回のリクエストで取得する件数
+        - [x] `offset`: 取得開始位置
+    - [x] レスポンスボディの変更:
+        - [x] ページネーション情報 (`limit`, `offset`, `total`) を追加
+        - [x] `items` 配列の中に配信データを入れる構造に変更
+        - [x] 各配信データに `category` を追加
+- [x] **配信詳細取得 API (`GET /streams/{stream_id}`)**
+    - [x] レスポンスボディに `category` を追加
+- [x] **配信削除 API (`DELETE /streams/{stream_id}`)**
+    - [x] 論理削除である旨を記載
 
 ## 3. 実装 (Rust)
 
