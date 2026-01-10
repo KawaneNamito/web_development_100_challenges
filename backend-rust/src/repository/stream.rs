@@ -8,7 +8,12 @@ use uuid::Uuid;
 pub trait StreamRepository: Send + Sync {
     async fn create(&self, stream: &Stream) -> Result<Stream>;
     async fn find_by_id(&self, stream_id: Uuid) -> Result<Option<Stream>>;
-    async fn find_all(&self) -> Result<Vec<Stream>>;
+    async fn find_all(
+        &self,
+        category: Option<String>,
+        limit: Option<i32>,
+        offset: Option<i32>,
+    ) -> Result<(Vec<Stream>, i64)>;
     async fn delete(&self, stream_id: Uuid) -> Result<()>;
 }
 
@@ -28,15 +33,17 @@ impl StreamRepository for StreamRepositoryImpl {
         let created_stream = sqlx::query_as!(
             Stream,
             r#"
-            INSERT INTO streams (stream_id, user_id, title, description, created_at)
-            VALUES ($1, $2, $3, $4, $5)
-            RETURNING stream_id, user_id, title, description, created_at
+            INSERT INTO streams (stream_id, user_id, title, description, category, created_at, deleted_at)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            RETURNING stream_id, user_id, title, description, category, created_at, deleted_at
             "#,
             stream.stream_id,
             stream.user_id,
             stream.title,
             stream.description,
+            stream.category,
             stream.created_at,
+            stream.deleted_at,
         )
         .fetch_one(&self.pool)
         .await?;
@@ -48,11 +55,11 @@ impl StreamRepository for StreamRepositoryImpl {
         let stream = sqlx::query_as!(
             Stream,
             r#"
-            SELECT stream_id, user_id, title, description, created_at
+            SELECT stream_id, user_id, title, description, category, created_at, deleted_at
             FROM streams
-            WHERE stream_id = $1
+            WHERE stream_id = $1 AND deleted_at IS NULL
             "#,
-            stream_id,
+            stream_id
         )
         .fetch_optional(&self.pool)
         .await?;
@@ -60,28 +67,57 @@ impl StreamRepository for StreamRepositoryImpl {
         Ok(stream)
     }
 
-    async fn find_all(&self) -> Result<Vec<Stream>> {
+    async fn find_all(
+        &self,
+        category: Option<String>,
+        limit: Option<i32>,
+        offset: Option<i32>,
+    ) -> Result<(Vec<Stream>, i64)> {
+        let limit = limit.unwrap_or(10) as i64;
+        let offset = offset.unwrap_or(0) as i64;
+
         let streams = sqlx::query_as!(
             Stream,
             r#"
-            SELECT stream_id, user_id, title, description, created_at
+            SELECT stream_id, user_id, title, description, category, created_at, deleted_at
             FROM streams
+            WHERE deleted_at IS NULL
+            AND ($1::text IS NULL OR category = $1)
             ORDER BY created_at DESC
+            LIMIT $2 OFFSET $3
             "#,
+            category,
+            limit,
+            offset
         )
         .fetch_all(&self.pool)
         .await?;
 
-        Ok(streams)
+        let total = sqlx::query!(
+            r#"
+            SELECT COUNT(*) as count
+            FROM streams
+            WHERE deleted_at IS NULL
+            AND ($1::text IS NULL OR category = $1)
+            "#,
+            category
+        )
+        .fetch_one(&self.pool)
+        .await?
+        .count
+        .unwrap_or(0);
+
+        Ok((streams, total))
     }
 
     async fn delete(&self, stream_id: Uuid) -> Result<()> {
         sqlx::query!(
             r#"
-            DELETE FROM streams
+            UPDATE streams
+            SET deleted_at = NOW()
             WHERE stream_id = $1
             "#,
-            stream_id,
+            stream_id
         )
         .execute(&self.pool)
         .await?;
@@ -122,7 +158,9 @@ mod tests {
             user_id: existing_user_id,
             title: "Test Stream".to_string(),
             description: "Test Description".to_string(),
+            category: "".to_string(),
             created_at: Utc::now(),
+            deleted_at: None,
         };
 
         // Create
@@ -157,7 +195,9 @@ mod tests {
             user_id: existing_user_id,
             title: "Test Stream 1".to_string(),
             description: "Description 1".to_string(),
+            category: "".to_string(),
             created_at: Utc::now(),
+            deleted_at: None,
         };
 
         let stream2 = Stream {
@@ -165,7 +205,9 @@ mod tests {
             user_id: existing_user_id,
             title: "Test Stream 2".to_string(),
             description: "Description 2".to_string(),
+            category: "".to_string(),
             created_at: Utc::now(),
+            deleted_at: None,
         };
 
         // Create test data
@@ -173,7 +215,7 @@ mod tests {
         repo.create(&stream2).await.expect("Failed to create stream2");
 
         // Find all
-        let streams = repo.find_all().await.expect("Failed to find all streams");
+        let (streams, _) = repo.find_all(None, None, None).await.expect("Failed to find all streams");
         assert!(streams.len() >= 2);
 
         // Cleanup
@@ -195,7 +237,9 @@ mod tests {
             user_id: existing_user_id,
             title: "Test Stream to Delete".to_string(),
             description: "Will be deleted".to_string(),
+            category: "".to_string(),
             created_at: Utc::now(),
+            deleted_at: None,
         };
 
         // Create
