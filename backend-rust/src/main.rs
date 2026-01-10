@@ -50,10 +50,10 @@ async fn main() -> Result<()> {
 
     // ルーターの設定
     let app = Router::new()
-        .route("/api/v1/streams", post(handler::create_stream))
-        .route("/api/v1/streams", get(handler::get_streams))
-        .route("/api/v1/streams/:stream_id", get(handler::get_stream))
-        .route("/api/v1/streams/:stream_id", delete(handler::delete_stream))
+        .route("/api/v2/streams", post(handler::create_stream))
+        .route("/api/v2/streams", get(handler::get_streams))
+        .route("/api/v2/streams/:stream_id", get(handler::get_stream))
+        .route("/api/v2/streams/:stream_id", delete(handler::delete_stream))
         .layer(cors)
         .layer(tower_http::trace::TraceLayer::new_for_http())
         .with_state(stream_repo);
