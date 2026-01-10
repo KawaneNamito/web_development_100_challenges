@@ -51,7 +51,7 @@ pub enum ApiV2StreamsStreamIdGetError {
 }
 
 
-pub async fn api_v2_streams_get(configuration: &configuration::Configuration, category: Option<&str>, limit: Option<i32>, offset: Option<i32>) -> Result<models::ApiV2StreamsGet200Response, Error<ApiV2StreamsGetError>> {
+pub async fn api_v2_streams_get(configuration: &configuration::Configuration, category: Option<&str>, limit: Option<i32>, offset: Option<i32>) -> Result<models::StreamListResponse, Error<ApiV2StreamsGetError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_category = category;
     let p_query_limit = limit;
@@ -88,8 +88,8 @@ pub async fn api_v2_streams_get(configuration: &configuration::Configuration, ca
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ApiV2StreamsGet200Response`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ApiV2StreamsGet200Response`")))),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::StreamListResponse`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::StreamListResponse`")))),
         }
     } else {
         let content = resp.text().await?;
@@ -98,9 +98,9 @@ pub async fn api_v2_streams_get(configuration: &configuration::Configuration, ca
     }
 }
 
-pub async fn api_v2_streams_post(configuration: &configuration::Configuration, api_v2_streams_post_request: models::ApiV2StreamsPostRequest) -> Result<models::Stream, Error<ApiV2StreamsPostError>> {
+pub async fn api_v2_streams_post(configuration: &configuration::Configuration, create_stream_request: models::CreateStreamRequest) -> Result<models::Stream, Error<ApiV2StreamsPostError>> {
     // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_api_v2_streams_post_request = api_v2_streams_post_request;
+    let p_body_create_stream_request = create_stream_request;
 
     let uri_str = format!("{}/api/v2/streams", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
@@ -108,7 +108,7 @@ pub async fn api_v2_streams_post(configuration: &configuration::Configuration, a
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    req_builder = req_builder.json(&p_body_api_v2_streams_post_request);
+    req_builder = req_builder.json(&p_body_create_stream_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;

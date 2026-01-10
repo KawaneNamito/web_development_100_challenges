@@ -13,7 +13,7 @@ Method | HTTP request | Description
 
 ## api_v2_streams_get
 
-> models::ApiV2StreamsGet200Response api_v2_streams_get(category, limit, offset)
+> models::StreamListResponse api_v2_streams_get(category, limit, offset)
 YouTube配信情報の一覧取得
 
 ### Parameters
@@ -27,7 +27,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::ApiV2StreamsGet200Response**](_api_v2_streams_get_200_response.md)
+[**models::StreamListResponse**](StreamListResponse.md)
 
 ### Authorization
 
@@ -43,7 +43,7 @@ No authorization required
 
 ## api_v2_streams_post
 
-> models::Stream api_v2_streams_post(api_v2_streams_post_request)
+> models::Stream api_v2_streams_post(create_stream_request)
 YouTube配信情報の登録
 
 ### Parameters
@@ -51,7 +51,7 @@ YouTube配信情報の登録
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**api_v2_streams_post_request** | [**ApiV2StreamsPostRequest**](ApiV2StreamsPostRequest.md) |  | [required] |
+**create_stream_request** | [**CreateStreamRequest**](CreateStreamRequest.md) |  | [required] |
 
 ### Return type
 

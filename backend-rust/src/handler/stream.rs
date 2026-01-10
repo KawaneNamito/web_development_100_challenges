@@ -3,7 +3,7 @@ use crate::{
     model::Stream,
     repository::StreamRepository,
     schema::{
-        ApiV2StreamsGet200Response, CreateStreamRequest, StreamResponse, StreamSummaryResponse,
+        CreateStreamRequest, StreamListResponse, StreamResponse, StreamSummaryResponse,
     },
 };
 use axum::{
@@ -70,7 +70,7 @@ pub async fn create_stream(
 pub async fn get_streams(
     State(repo): State<Arc<dyn StreamRepository>>,
     Query(query): Query<ListStreamsQuery>,
-) -> Result<Json<ApiV2StreamsGet200Response>, AppError> {
+) -> Result<Json<StreamListResponse>, AppError> {
     if let Some(limit) = query.limit {
         if limit > 100 {
             return Err(AppError::Validation(
@@ -83,7 +83,7 @@ pub async fn get_streams(
         .find_all(query.category, query.limit, query.offset)
         .await?;
 
-    let response = ApiV2StreamsGet200Response {
+    let response = StreamListResponse {
         total: Some(total as i32),
         limit: Some(query.limit.unwrap_or(10)),
         offset: Some(query.offset.unwrap_or(0)),

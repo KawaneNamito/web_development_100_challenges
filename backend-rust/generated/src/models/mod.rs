@@ -1,11 +1,11 @@
-pub mod _api_v2_streams_get_200_response;
-pub use self::_api_v2_streams_get_200_response::ApiV2StreamsGet200Response;
-pub mod _api_v2_streams_post_request;
-pub use self::_api_v2_streams_post_request::ApiV2StreamsPostRequest;
+pub mod create_stream_request;
+pub use self::create_stream_request::CreateStreamRequest;
 pub mod server_error;
 pub use self::server_error::ServerError;
 pub mod stream;
 pub use self::stream::Stream;
+pub mod stream_list_response;
+pub use self::stream_list_response::StreamListResponse;
 pub mod stream_summary;
 pub use self::stream_summary::StreamSummary;
 pub mod validation_error;

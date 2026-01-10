@@ -16,29 +16,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - userId
-                - title
-                - description
-              properties:
-                userId:
-                  type: string
-                  description: ユーザーID
-                  example: "1"
-                title:
-                  type: string
-                  description: 配信タイトル
-                  example: "今日のライブ配信"
-                description:
-                  type: string
-                  description: 概要欄の内容
-                  example: "ゲーム実況をします"
-                  maxLength: 500
-                category:
-                  type: string
-                  description: 配信カテゴリ（任意）
-                  example: "ゲーム"
+              $ref: "#/components/schemas/CreateStreamRequest"
       responses:
         "201":
           description: 作成成功
@@ -91,24 +69,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  total:
-                    type: integer
-                    description: 該当する全データ件数
-                    example: 100
-                  limit:
-                    type: integer
-                    description: リクエストされた取得件数
-                    example: 10
-                  offset:
-                    type: integer
-                    description: リクエストされた取得開始位置
-                    example: 0
-                  items:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/StreamSummary"
+                $ref: "#/components/schemas/StreamListResponse"
         "500":
           description: サーバー内部エラー
           content:
@@ -169,6 +130,49 @@ paths:
 
 components:
   schemas:
+    CreateStreamRequest:
+      type: object
+      required:
+        - userId
+        - title
+        - description
+      properties:
+        userId:
+          type: string
+          description: ユーザーID
+          example: "1"
+        title:
+          type: string
+          description: 配信タイトル
+          example: "今日のライブ配信"
+        description:
+          type: string
+          description: 概要欄の内容
+          example: "ゲーム実況をします"
+          maxLength: 500
+        category:
+          type: string
+          description: 配信カテゴリ（任意）
+          example: "ゲーム"
+    StreamListResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: 該当する全データ件数
+          example: 100
+        limit:
+          type: integer
+          description: リクエストされた取得件数
+          example: 10
+        offset:
+          type: integer
+          description: リクエストされた取得開始位置
+          example: 0
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/StreamSummary"
     Stream:
       type: object
       properties:
@@ -220,7 +224,7 @@ components:
           type: string
           format: date-time
           description: 作成日時
-          example: "2025-12-08  T10:00:00Z"
+          example: "2025-12-08T10:00:00Z"
     ValidationError:
       type: object
       properties:

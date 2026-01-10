@@ -34,10 +34,10 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
- - [ApiV2StreamsGet200Response](docs/ApiV2StreamsGet200Response.md)
- - [ApiV2StreamsPostRequest](docs/ApiV2StreamsPostRequest.md)
+ - [CreateStreamRequest](docs/CreateStreamRequest.md)
  - [ServerError](docs/ServerError.md)
  - [Stream](docs/Stream.md)
+ - [StreamListResponse](docs/StreamListResponse.md)
  - [StreamSummary](docs/StreamSummary.md)
  - [ValidationError](docs/ValidationError.md)
  - [ValidationErrorDetailsInner](docs/ValidationErrorDetailsInner.md)
