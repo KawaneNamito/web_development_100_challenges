@@ -2,8 +2,8 @@
 .travis.yml
 Cargo.toml
 README.md
-docs/ApiV1StreamsGet200Response.md
-docs/ApiV1StreamsPostRequest.md
+docs/ApiV2StreamsGet200Response.md
+docs/ApiV2StreamsPostRequest.md
 docs/DefaultApi.md
 docs/ServerError.md
 docs/Stream.md
@@ -15,8 +15,8 @@ src/apis/configuration.rs
 src/apis/default_api.rs
 src/apis/mod.rs
 src/lib.rs
-src/models/_api_v1_streams_get_200_response.rs
-src/models/_api_v1_streams_post_request.rs
+src/models/_api_v2_streams_get_200_response.rs
+src/models/_api_v2_streams_post_request.rs
 src/models/mod.rs
 src/models/server_error.rs
 src/models/stream.rs

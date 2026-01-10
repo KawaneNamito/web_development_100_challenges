@@ -6,7 +6,7 @@ servers:
   - url: http://localhost:8080/
     description: "ローカル開発環境"
 paths:
-  /api/v1/streams:
+  /api/v2/streams:
     post:
       summary: YouTube配信情報の登録
       tags:
@@ -116,7 +116,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ServerError"
 
-  /api/v1/streams/{streamId}:
+  /api/v2/streams/{streamId}:
     get:
       summary: YouTube配信情報の詳細取得
       tags:

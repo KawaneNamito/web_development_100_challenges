@@ -26,16 +26,16 @@ All URIs are relative to *http://localhost:8080*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*DefaultApi* | [**api_v1_streams_get**](docs/DefaultApi.md#api_v1_streams_get) | **GET** /api/v1/streams | YouTube配信情報の一覧取得
-*DefaultApi* | [**api_v1_streams_post**](docs/DefaultApi.md#api_v1_streams_post) | **POST** /api/v1/streams | YouTube配信情報の登録
-*DefaultApi* | [**api_v1_streams_stream_id_delete**](docs/DefaultApi.md#api_v1_streams_stream_id_delete) | **DELETE** /api/v1/streams/{streamId} | YouTube配信情報の削除（論理削除）
-*DefaultApi* | [**api_v1_streams_stream_id_get**](docs/DefaultApi.md#api_v1_streams_stream_id_get) | **GET** /api/v1/streams/{streamId} | YouTube配信情報の詳細取得
+*DefaultApi* | [**api_v2_streams_get**](docs/DefaultApi.md#api_v2_streams_get) | **GET** /api/v2/streams | YouTube配信情報の一覧取得
+*DefaultApi* | [**api_v2_streams_post**](docs/DefaultApi.md#api_v2_streams_post) | **POST** /api/v2/streams | YouTube配信情報の登録
+*DefaultApi* | [**api_v2_streams_stream_id_delete**](docs/DefaultApi.md#api_v2_streams_stream_id_delete) | **DELETE** /api/v2/streams/{streamId} | YouTube配信情報の削除（論理削除）
+*DefaultApi* | [**api_v2_streams_stream_id_get**](docs/DefaultApi.md#api_v2_streams_stream_id_get) | **GET** /api/v2/streams/{streamId} | YouTube配信情報の詳細取得
 
 
 ## Documentation For Models
 
- - [ApiV1StreamsGet200Response](docs/ApiV1StreamsGet200Response.md)
- - [ApiV1StreamsPostRequest](docs/ApiV1StreamsPostRequest.md)
+ - [ApiV2StreamsGet200Response](docs/ApiV2StreamsGet200Response.md)
+ - [ApiV2StreamsPostRequest](docs/ApiV2StreamsPostRequest.md)
  - [ServerError](docs/ServerError.md)
  - [Stream](docs/Stream.md)
  - [StreamSummary](docs/StreamSummary.md)

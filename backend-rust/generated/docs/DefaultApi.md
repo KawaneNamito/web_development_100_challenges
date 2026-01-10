@@ -4,16 +4,16 @@ All URIs are relative to *http://localhost:8080*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**api_v1_streams_get**](DefaultApi.md#api_v1_streams_get) | **GET** /api/v1/streams | YouTube配信情報の一覧取得
-[**api_v1_streams_post**](DefaultApi.md#api_v1_streams_post) | **POST** /api/v1/streams | YouTube配信情報の登録
-[**api_v1_streams_stream_id_delete**](DefaultApi.md#api_v1_streams_stream_id_delete) | **DELETE** /api/v1/streams/{streamId} | YouTube配信情報の削除（論理削除）
-[**api_v1_streams_stream_id_get**](DefaultApi.md#api_v1_streams_stream_id_get) | **GET** /api/v1/streams/{streamId} | YouTube配信情報の詳細取得
+[**api_v2_streams_get**](DefaultApi.md#api_v2_streams_get) | **GET** /api/v2/streams | YouTube配信情報の一覧取得
+[**api_v2_streams_post**](DefaultApi.md#api_v2_streams_post) | **POST** /api/v2/streams | YouTube配信情報の登録
+[**api_v2_streams_stream_id_delete**](DefaultApi.md#api_v2_streams_stream_id_delete) | **DELETE** /api/v2/streams/{streamId} | YouTube配信情報の削除（論理削除）
+[**api_v2_streams_stream_id_get**](DefaultApi.md#api_v2_streams_stream_id_get) | **GET** /api/v2/streams/{streamId} | YouTube配信情報の詳細取得
 
 
 
-## api_v1_streams_get
+## api_v2_streams_get
 
-> models::ApiV1StreamsGet200Response api_v1_streams_get(category, limit, offset)
+> models::ApiV2StreamsGet200Response api_v2_streams_get(category, limit, offset)
 YouTube配信情報の一覧取得
 
 ### Parameters
@@ -27,7 +27,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**models::ApiV1StreamsGet200Response**](_api_v1_streams_get_200_response.md)
+[**models::ApiV2StreamsGet200Response**](_api_v2_streams_get_200_response.md)
 
 ### Authorization
 
@@ -41,9 +41,9 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
-## api_v1_streams_post
+## api_v2_streams_post
 
-> models::Stream api_v1_streams_post(api_v1_streams_post_request)
+> models::Stream api_v2_streams_post(api_v2_streams_post_request)
 YouTube配信情報の登録
 
 ### Parameters
@@ -51,7 +51,7 @@ YouTube配信情報の登録
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**api_v1_streams_post_request** | [**ApiV1StreamsPostRequest**](ApiV1StreamsPostRequest.md) |  | [required] |
+**api_v2_streams_post_request** | [**ApiV2StreamsPostRequest**](ApiV2StreamsPostRequest.md) |  | [required] |
 
 ### Return type
 
@@ -69,9 +69,9 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
-## api_v1_streams_stream_id_delete
+## api_v2_streams_stream_id_delete
 
-> api_v1_streams_stream_id_delete(stream_id)
+> api_v2_streams_stream_id_delete(stream_id)
 YouTube配信情報の削除（論理削除）
 
 ### Parameters
@@ -97,9 +97,9 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
-## api_v1_streams_stream_id_get
+## api_v2_streams_stream_id_get
 
-> models::Stream api_v1_streams_stream_id_get(stream_id)
+> models::Stream api_v2_streams_stream_id_get(stream_id)
 YouTube配信情報の詳細取得
 
 ### Parameters

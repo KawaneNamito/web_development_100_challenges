@@ -1,7 +1,7 @@
-pub mod _api_v1_streams_get_200_response;
-pub use self::_api_v1_streams_get_200_response::ApiV1StreamsGet200Response;
-pub mod _api_v1_streams_post_request;
-pub use self::_api_v1_streams_post_request::ApiV1StreamsPostRequest;
+pub mod _api_v2_streams_get_200_response;
+pub use self::_api_v2_streams_get_200_response::ApiV2StreamsGet200Response;
+pub mod _api_v2_streams_post_request;
+pub use self::_api_v2_streams_post_request::ApiV2StreamsPostRequest;
 pub mod server_error;
 pub use self::server_error::ServerError;
 pub mod stream;

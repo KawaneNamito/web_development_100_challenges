@@ -15,49 +15,49 @@ use crate::{apis::ResponseContent, models};
 use super::{Error, configuration, ContentType};
 
 
-/// struct for typed errors of method [`api_v1_streams_get`]
+/// struct for typed errors of method [`api_v2_streams_get`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum ApiV1StreamsGetError {
+pub enum ApiV2StreamsGetError {
     Status500(models::ServerError),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`api_v1_streams_post`]
+/// struct for typed errors of method [`api_v2_streams_post`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum ApiV1StreamsPostError {
+pub enum ApiV2StreamsPostError {
     Status400(models::ValidationError),
     Status500(models::ServerError),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`api_v1_streams_stream_id_delete`]
+/// struct for typed errors of method [`api_v2_streams_stream_id_delete`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum ApiV1StreamsStreamIdDeleteError {
+pub enum ApiV2StreamsStreamIdDeleteError {
     Status404(),
     Status500(models::ServerError),
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`api_v1_streams_stream_id_get`]
+/// struct for typed errors of method [`api_v2_streams_stream_id_get`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum ApiV1StreamsStreamIdGetError {
+pub enum ApiV2StreamsStreamIdGetError {
     Status404(),
     Status500(models::ServerError),
     UnknownValue(serde_json::Value),
 }
 
 
-pub async fn api_v1_streams_get(configuration: &configuration::Configuration, category: Option<&str>, limit: Option<i32>, offset: Option<i32>) -> Result<models::ApiV1StreamsGet200Response, Error<ApiV1StreamsGetError>> {
+pub async fn api_v2_streams_get(configuration: &configuration::Configuration, category: Option<&str>, limit: Option<i32>, offset: Option<i32>) -> Result<models::ApiV2StreamsGet200Response, Error<ApiV2StreamsGetError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_query_category = category;
     let p_query_limit = limit;
     let p_query_offset = offset;
 
-    let uri_str = format!("{}/api/v1/streams", configuration.base_path);
+    let uri_str = format!("{}/api/v2/streams", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref param_value) = p_query_category {
@@ -88,27 +88,27 @@ pub async fn api_v1_streams_get(configuration: &configuration::Configuration, ca
         let content = resp.text().await?;
         match content_type {
             ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
-            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ApiV1StreamsGet200Response`"))),
-            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ApiV1StreamsGet200Response`")))),
+            ContentType::Text => return Err(Error::from(serde_json::Error::custom("Received `text/plain` content type response that cannot be converted to `models::ApiV2StreamsGet200Response`"))),
+            ContentType::Unsupported(unknown_type) => return Err(Error::from(serde_json::Error::custom(format!("Received `{unknown_type}` content type response that cannot be converted to `models::ApiV2StreamsGet200Response`")))),
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<ApiV1StreamsGetError> = serde_json::from_str(&content).ok();
+        let entity: Option<ApiV2StreamsGetError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
-pub async fn api_v1_streams_post(configuration: &configuration::Configuration, api_v1_streams_post_request: models::ApiV1StreamsPostRequest) -> Result<models::Stream, Error<ApiV1StreamsPostError>> {
+pub async fn api_v2_streams_post(configuration: &configuration::Configuration, api_v2_streams_post_request: models::ApiV2StreamsPostRequest) -> Result<models::Stream, Error<ApiV2StreamsPostError>> {
     // add a prefix to parameters to efficiently prevent name collisions
-    let p_body_api_v1_streams_post_request = api_v1_streams_post_request;
+    let p_body_api_v2_streams_post_request = api_v2_streams_post_request;
 
-    let uri_str = format!("{}/api/v1/streams", configuration.base_path);
+    let uri_str = format!("{}/api/v2/streams", configuration.base_path);
     let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
         req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    req_builder = req_builder.json(&p_body_api_v1_streams_post_request);
+    req_builder = req_builder.json(&p_body_api_v2_streams_post_request);
 
     let req = req_builder.build()?;
     let resp = configuration.client.execute(req).await?;
@@ -130,16 +130,16 @@ pub async fn api_v1_streams_post(configuration: &configuration::Configuration, a
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<ApiV1StreamsPostError> = serde_json::from_str(&content).ok();
+        let entity: Option<ApiV2StreamsPostError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
-pub async fn api_v1_streams_stream_id_delete(configuration: &configuration::Configuration, stream_id: &str) -> Result<(), Error<ApiV1StreamsStreamIdDeleteError>> {
+pub async fn api_v2_streams_stream_id_delete(configuration: &configuration::Configuration, stream_id: &str) -> Result<(), Error<ApiV2StreamsStreamIdDeleteError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_stream_id = stream_id;
 
-    let uri_str = format!("{}/api/v1/streams/{streamId}", configuration.base_path, streamId=crate::apis::urlencode(p_path_stream_id));
+    let uri_str = format!("{}/api/v2/streams/{streamId}", configuration.base_path, streamId=crate::apis::urlencode(p_path_stream_id));
     let mut req_builder = configuration.client.request(reqwest::Method::DELETE, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -155,16 +155,16 @@ pub async fn api_v1_streams_stream_id_delete(configuration: &configuration::Conf
         Ok(())
     } else {
         let content = resp.text().await?;
-        let entity: Option<ApiV1StreamsStreamIdDeleteError> = serde_json::from_str(&content).ok();
+        let entity: Option<ApiV2StreamsStreamIdDeleteError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
-pub async fn api_v1_streams_stream_id_get(configuration: &configuration::Configuration, stream_id: &str) -> Result<models::Stream, Error<ApiV1StreamsStreamIdGetError>> {
+pub async fn api_v2_streams_stream_id_get(configuration: &configuration::Configuration, stream_id: &str) -> Result<models::Stream, Error<ApiV2StreamsStreamIdGetError>> {
     // add a prefix to parameters to efficiently prevent name collisions
     let p_path_stream_id = stream_id;
 
-    let uri_str = format!("{}/api/v1/streams/{streamId}", configuration.base_path, streamId=crate::apis::urlencode(p_path_stream_id));
+    let uri_str = format!("{}/api/v2/streams/{streamId}", configuration.base_path, streamId=crate::apis::urlencode(p_path_stream_id));
     let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
     if let Some(ref user_agent) = configuration.user_agent {
@@ -191,7 +191,7 @@ pub async fn api_v1_streams_stream_id_get(configuration: &configuration::Configu
         }
     } else {
         let content = resp.text().await?;
-        let entity: Option<ApiV1StreamsStreamIdGetError> = serde_json::from_str(&content).ok();
+        let entity: Option<ApiV2StreamsStreamIdGetError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
