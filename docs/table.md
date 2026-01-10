@@ -32,8 +32,11 @@ CREATE TABLE streams (
   FOREIGN KEY (user_id) REFERENCES users(user_id),
   title TEXT NOT NULL DEFAULT '',
   description TEXT NOT NULL DEFAULT '',
-  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+  category TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMPTZ
 );
+
 ```
 
 ## サンプルデータ
@@ -50,12 +53,13 @@ INSERT INTO users (user_id) VALUES
 ### streams テーブルへの挿入
 
 ```sql
-INSERT INTO streams (stream_id, user_id, title, description, created_at) VALUES
+INSERT INTO streams (stream_id, user_id, title, description, category, created_at) VALUES
   (
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
     '11111111-1111-1111-1111-111111111111',
     'はじめての配信',
     'テスト配信です。よろしくお願いします！',
+    '雑談',
     '2025-01-01 10:00:00+09'
   ),
   (
@@ -63,6 +67,7 @@ INSERT INTO streams (stream_id, user_id, title, description, created_at) VALUES
     '11111111-1111-1111-1111-111111111111',
     'ゲーム実況 Part1',
     '人気ゲームをプレイします',
+    'ゲーム',
     '2025-01-02 20:00:00+09'
   ),
   (
@@ -70,6 +75,7 @@ INSERT INTO streams (stream_id, user_id, title, description, created_at) VALUES
     '22222222-2222-2222-2222-222222222222',
     '料理配信',
     '今日は簡単パスタを作ります',
+    '料理',
     '2025-01-03 12:00:00+09'
   );
 ```
