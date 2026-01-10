@@ -1,3 +1,4 @@
-pub mod api;
-
-pub use api::{CreateStreamRequest, StreamResponse, StreamSummaryResponse, StreamListResponse};
+pub use openapi_types::models::{
+    CreateStreamRequest, Stream as StreamResponse, StreamListResponse,
+    StreamSummary as StreamSummaryResponse, ValidationError, ServerError,
+};

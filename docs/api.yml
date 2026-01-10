@@ -1,12 +1,12 @@
 openapi: "3.0.3"
 info:
   title: WEB 100本ノック
-  version: "1.0"
+  version: "2.0.0"
 servers:
   - url: http://localhost:8080/
     description: "ローカル開発環境"
 paths:
-  /api/v1/streams:
+  /api/v2/streams:
     post:
       summary: YouTube配信情報の登録
       tags:
@@ -16,25 +16,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - userId
-                - title
-                - description
-              properties:
-                userId:
-                  type: string
-                  description: ユーザーID
-                  example: "1"
-                title:
-                  type: string
-                  description: 配信タイトル
-                  example: "今日のライブ配信"
-                description:
-                  type: string
-                  description: 概要欄の内容
-                  example: "ゲーム実況をします"
-                  maxLength: 500
+              $ref: "#/components/schemas/CreateStreamRequest"
       responses:
         "201":
           description: 作成成功
@@ -59,18 +41,35 @@ paths:
       summary: YouTube配信情報の一覧取得
       tags:
         - 配信情報
+      parameters:
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+          description: カテゴリによる絞り込み（部分一致）
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+          description: 1回のリクエストで取得する件数
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+          description: 取得開始位置
       responses:
         "200":
           description: 取得成功
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  streams:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/StreamSummary"
+                $ref: "#/components/schemas/StreamListResponse"
         "500":
           description: サーバー内部エラー
           content:
@@ -78,7 +77,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ServerError"
 
-  /api/v1/streams/{streamId}:
+  /api/v2/streams/{streamId}:
     get:
       summary: YouTube配信情報の詳細取得
       tags:
@@ -107,7 +106,7 @@ paths:
                 $ref: "#/components/schemas/ServerError"
 
     delete:
-      summary: YouTube配信情報の削除
+      summary: YouTube配信情報の削除（論理削除）
       tags:
         - 配信情報
       parameters:
@@ -131,6 +130,49 @@ paths:
 
 components:
   schemas:
+    CreateStreamRequest:
+      type: object
+      required:
+        - userId
+        - title
+        - description
+      properties:
+        userId:
+          type: string
+          description: ユーザーID
+          example: "1"
+        title:
+          type: string
+          description: 配信タイトル
+          example: "今日のライブ配信"
+        description:
+          type: string
+          description: 概要欄の内容
+          example: "ゲーム実況をします"
+          maxLength: 500
+        category:
+          type: string
+          description: 配信カテゴリ（任意）
+          example: "ゲーム"
+    StreamListResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: 該当する全データ件数
+          example: 100
+        limit:
+          type: integer
+          description: リクエストされた取得件数
+          example: 10
+        offset:
+          type: integer
+          description: リクエストされた取得開始位置
+          example: 0
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/StreamSummary"
     Stream:
       type: object
       properties:
@@ -150,6 +192,10 @@ components:
           type: string
           description: 配信の説明
           example: "ゲーム実況をします"
+        category:
+          type: string
+          description: 配信カテゴリ
+          example: "ゲーム"
         createdAt:
           type: string
           format: date-time
@@ -170,11 +216,15 @@ components:
           type: string
           description: 配信タイトル
           example: "今日のライブ配信"
+        category:
+          type: string
+          description: 配信カテゴリ
+          example: "ゲーム"
         createdAt:
           type: string
           format: date-time
           description: 作成日時
-          example: "2025-12-08  T10:00:00Z"
+          example: "2025-12-08T10:00:00Z"
     ValidationError:
       type: object
       properties:

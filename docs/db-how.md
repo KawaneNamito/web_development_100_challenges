@@ -1,22 +1,21 @@
-# ローカルDB開発環境
+# ローカル DB 開発環境
 
 ## 概要
 
-Docker Composeを使用してPostgreSQLをローカルで起動し、バックエンドから接続する開発環境です。
+Docker Compose を使用して PostgreSQL をローカルで起動し、バックエンドから接続する開発環境です。
 
 ## 前提条件
 
 - Docker / Docker Compose がインストールされていること
-- psql クライアント（接続テスト用、オプション）
 
 ## ファイル構成
 
-| ファイル | 説明 |
-|---------|------|
-| `docker-compose.yml` | PostgreSQL 16 コンテナ定義 |
-| `.env` | 環境変数（ローカル用、gitignore対象） |
-| `.env.example` | 環境変数のテンプレート |
-| `infra/database/migration` | DB初期化SQL |
+| ファイル                   | 説明                                   |
+| -------------------------- | -------------------------------------- |
+| `docker-compose.yml`       | PostgreSQL 16 コンテナ定義             |
+| `.env`                     | 環境変数（ローカル用、gitignore 対象） |
+| `.env.example`             | 環境変数のテンプレート                 |
+| `infra/database/migration` | DB 初期化 SQL                          |
 
 ## 環境変数
 
@@ -26,12 +25,12 @@ Docker Composeを使用してPostgreSQLをローカルで起動し、バック�
 cp .env.example .env
 ```
 
-| 変数名 | デフォルト値 | 説明 |
-|--------|-------------|------|
-| `POSTGRES_USER` | devuser | DBユーザー名 |
-| `POSTGRES_PASSWORD` | devpassword | DBパスワード |
-| `POSTGRES_DB` | devdb | データベース名 |
-| `DATABASE_URL` | postgresql://devuser:devpassword@localhost:5432/devdb | 接続文字列 |
+| 変数名              | デフォルト値                                          | 説明           |
+| ------------------- | ----------------------------------------------------- | -------------- |
+| `POSTGRES_USER`     | devuser                                               | DB ユーザー名  |
+| `POSTGRES_PASSWORD` | devpassword                                           | DB パスワード  |
+| `POSTGRES_DB`       | devdb                                                 | データベース名 |
+| `DATABASE_URL`      | postgresql://devuser:devpassword@localhost:5432/devdb | 接続文字列     |
 
 ## 使い方
 
@@ -42,10 +41,6 @@ docker compose up -d
 # ログ確認
 docker compose logs -f postgres
 
-# 接続テスト
-psql -h localhost -U devuser -d devdb
-# パスワード: devpassword
-
 # 停止
 docker compose down
 
@@ -53,9 +48,47 @@ docker compose down
 docker compose down -v
 ```
 
+## データベース接続
+
+### Docker コンテナ経由で psql を使用（psql のインストール不要）
+
+```powershell
+# インタラクティブシェルに接続
+docker exec -it dev-postgres psql -U devuser -d devdb
+
+# クエリを直接実行
+docker exec dev-postgres psql -U devuser -d devdb -c "SELECT * FROM users;"
+
+# テーブル一覧を表示
+docker exec dev-postgres psql -U devuser -d devdb -c "\dt"
+
+# SQLファイルを実行
+docker exec -i dev-postgres psql -U devuser -d devdb < your-script.sql
+```
+
+### psql がインストール済みの場合
+
+```sh
+psql -h localhost -U devuser -d devdb
+# パスワード: devpassword
+```
+
+### よく使う psql コマンド
+
+インタラクティブシェル内で使用できるコマンド：
+
+```sql
+\dt              -- テーブル一覧
+\d table_name    -- テーブル構造を表示
+\l               -- データベース一覧
+\du              -- ユーザー一覧
+\c database      -- データベースを切り替え
+\q               -- 終了
+```
+
 ## トラブルシューティング
 
-### ポート5432が既に使用されている
+### ポート 5432 が既に使用されている
 
 ```sh
 # 使用中のプロセスを確認

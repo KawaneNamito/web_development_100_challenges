@@ -8,5 +8,7 @@ pub struct Stream {
     pub user_id: Uuid,
     pub title: String,
     pub description: String,
+    pub category: String,
     pub created_at: DateTime<Utc>,
+    pub deleted_at: Option<DateTime<Utc>>,
 }
