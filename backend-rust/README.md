@@ -55,7 +55,7 @@ cargo run --release
 ### 配信情報の登録
 
 ```bash
-POST /api/v1/streams
+POST /api/v2/streams
 Content-Type: application/json
 
 {
@@ -68,19 +68,19 @@ Content-Type: application/json
 ### 配信情報の一覧取得
 
 ```bash
-GET /api/v1/streams
+GET /api/v2/streams
 ```
 
 ### 配信情報の詳細取得
 
 ```bash
-GET /api/v1/streams/{streamId}
+GET /api/v2/streams/{streamId}
 ```
 
 ### 配信情報の削除
 
 ```bash
-DELETE /api/v1/streams/{streamId}
+DELETE /api/v2/streams/{streamId}
 ```
 
 ## 開発
